@@ -1,8 +1,8 @@
-#if canImport(Contacts)
-import Contacts
+#if canImport(Contacts) && canImport(SBFoundation)
+import SBFoundation
 
 /// An asychronous version of CNContactStore.
-/// - Author: Scott Brenner | SBSwifterSwift
+/// - Author: Scott Brenner | SBContacts
 public struct SBContactStore {
     
     private let store = CNContactStore()

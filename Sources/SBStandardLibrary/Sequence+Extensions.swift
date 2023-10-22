@@ -3,7 +3,7 @@ import Foundation
 extension Sequence {
     
     /// Returns the sum of the values of a given numeric property within this sequence.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBStandardLibrary
     /// - Complexity: O(n), where n is the length of the sequence.
     /// - Parameter keyPath: The numeric property to sum.
     /// - Returns: The sum of the values of a given numeric property within this sequence.
@@ -14,7 +14,7 @@ extension Sequence {
     }
     
     /// Returns an array containing the results of mapping the given property over the sequence’s elements.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBStandardLibrary
     /// - Complexity: O(n), where n is the length of the sequence.
     /// - Parameter keyPath: The property to map.
     /// - Returns: An array of the results of mapping the given property over the this sequence's elements.
@@ -23,7 +23,7 @@ extension Sequence {
     }
     
     /// Returns an array containing the `non-nil`elements  of this sequence.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBStandardLibrary
     /// - Complexity: O(m + n), where n is the length of this sequence and m is the length of the result.
     /// - Returns: An array containing the `non-nil`elements  of this sequence.
     public func compact<T>() -> [T] where Element == Optional<T> {
@@ -31,7 +31,7 @@ extension Sequence {
     }
     
     /// Returns the elements of the sequence sorted according to any comparable property.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBStandardLibrary
     /// - Complexity: O(n log n), where n is the length of the sequence.
     /// - Parameter keyPath: The comparable property by which to sort to the sequence.
     /// - Parameter ascending: The order in which to sort the sequence.
@@ -45,7 +45,7 @@ extension Sequence {
     }
     
     /// Returns a Boolean value indicating whether every element of a given sequence contains an element of the receiver that satisfies the matcher.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBStandardLibrary
     /// - Complexity: O(n * m), where n and m are the lengths of the sequences.
     /// - Parameter values: The given sequence.
     /// - Parameter matcher: A function that compares an element of the receiver to an element of the given sequence.
@@ -62,7 +62,7 @@ extension Sequence {
     }
     
     /// Returns the count of elements that should be counted based on the given closure.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBStandardLibrary
     /// - Parameter shouldBeCounted: A closure that determines if a given element should be counted.
     /// - Parameter element: The element of the sequence.
     /// - Returns: The count of elements that satisfy the given closure.
@@ -75,6 +75,7 @@ extension Sequence {
         }
     }
     
+    /// - Author: Scott Brenner | SBStandardLibrary
     public func asyncMap<T>(_ transform: (Element) async throws -> T) async rethrows -> [T] {
         var values = [T]()
         for element in self {
@@ -83,6 +84,7 @@ extension Sequence {
         return values
     }
     
+    /// - Author: Scott Brenner | SBStandardLibrary
     public func concurrentMap<T>(_ transform: @escaping (Element) async throws -> T) async throws -> [T] {
         let tasks = map { element in
             Task { try await transform(element) }
@@ -92,6 +94,7 @@ extension Sequence {
         }
     }
     
+    /// - Author: Scott Brenner | SBStandardLibrary
     public func asyncForEach(_ operation: (Element) async throws -> Void) async rethrows {
         for element in self {
             try await operation(element)

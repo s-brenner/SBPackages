@@ -1,11 +1,14 @@
-public extension Float {
+import Foundation
+
+extension Float {
     
-    /// Double.
-    var double: Double { Double(self) }
+    /// - Author: Scott Brenner | SBStandardLibrary
+    public var double: Double { Double(self) }
     
-    /// CGFloat.
-    var cgFloat: CGFloat { CGFloat(self) }
+    /// - Author: Scott Brenner | SBStandardLibrary
+    public var cgFloat: CGFloat { CGFloat(self) }
     
-    /// Int. Rounded to nearest or away from zero.
-    var int: Int { Int(self.rounded(.toNearestOrAwayFromZero)) }
+    /// Rounded to nearest or away from zero.
+    /// - Author: Scott Brenner | SBStandardLibrary
+    public var int: Int { Int(self.rounded(.toNearestOrAwayFromZero)) }
 }

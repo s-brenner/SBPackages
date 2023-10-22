@@ -1,21 +1,21 @@
 #if os(iOS) || os(tvOS) || os(macOS) || os(watchOS)
-public extension URLSession {
+extension URLSession {
     
     @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, *)
-    enum DownloadStatus {
+    public enum DownloadStatus {
         case response(HTTPURLResponse)
         case downloading(Double)
         case finished(Data)
     }
     
     @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, *)
-    func downloadStatus(from url: URL) -> AsyncThrowingStream<DownloadStatus, Error> {
+    public func downloadStatus(from url: URL) -> AsyncThrowingStream<DownloadStatus, Error> {
         let request = URLRequest(url: url)
         return downloadStatus(for: request)
     }
     
     @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, *)
-    func downloadStatus(for request: URLRequest) -> AsyncThrowingStream<DownloadStatus, Error> {
+    public func downloadStatus(for request: URLRequest) -> AsyncThrowingStream<DownloadStatus, Error> {
         AsyncThrowingStream { continuation in
             Task {
                 do {
@@ -32,8 +32,10 @@ public extension URLSession {
                     continuation.yield(.downloading(progress))
                     for try await byte in bytes {
                         data.append(byte)
-                        guard length.isPositive else { continue }
-                        let currentProgress = (data.count.double / length.double).roundedTo(places: 2, rule: .toNearestOrAwayFromZero)
+                        guard length.isPositive
+                        else { continue }
+                        let currentProgress = (data.count.double / length.double)
+                            .roundedTo(places: 2, rule: .toNearestOrAwayFromZero)
                         if progress != currentProgress {
                             progress = currentProgress
                             continuation.yield(.downloading(progress))

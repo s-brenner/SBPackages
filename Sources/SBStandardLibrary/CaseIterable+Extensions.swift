@@ -2,13 +2,18 @@
 extension CaseIterable where AllCases.Element: Equatable {
     
     /// Returns the next element in the array of all cases.
-    /// - Returns: The next element, looping to the beginning if needed.
-    ///- Author: Scott Brenner | SBSwifterSwift
-    public func next() -> Self {
+    /// - Author: Scott Brenner | SBStandardLibrary
+    /// - Returns: The next element.
+    public func next(loopingInfinitely: Bool = true) -> Self {
         let index = Self.allCases.firstIndex(of: self)!
         var nextIndex = Self.allCases.index(after: index)
         if nextIndex == Self.allCases.endIndex {
-            nextIndex = Self.allCases.startIndex
+            if loopingInfinitely {
+                nextIndex = Self.allCases.startIndex
+            }
+            else {
+                nextIndex = index
+            }
         }
         return Self.allCases[nextIndex]
     }

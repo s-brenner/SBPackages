@@ -5,6 +5,7 @@ extension NSObjectProtocol {
     /// Create (if necessary) and return a thread singleton instance of the object you want.
     ///
     /// Use this method to create objects that are expensive to initialize like Formatters.
+    /// - Author: Scott Brenner | SBStandardLibrary
     /// - Parameter key: The identifier of the object.
     /// - Parameter create: The create routine used the first time you are about to create the object in thread.
     /// - Returns: An instance of the object for the caller's thread.

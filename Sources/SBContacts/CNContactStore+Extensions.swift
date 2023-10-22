@@ -1,6 +1,4 @@
 #if canImport(Contacts)
-import Contacts
-
 extension CNContactStore {
     
     public struct CNContainerPredicate {

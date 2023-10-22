@@ -1,6 +1,4 @@
 #if canImport(Contacts)
-import Contacts
-
 extension CNAuthorizationStatus: CustomStringConvertible {
     
     public var description: String {

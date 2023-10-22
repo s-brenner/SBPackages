@@ -1,7 +1,6 @@
 import XCTest
-@testable import SBSwifterSwift
+@testable import SBFoundation
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, *)
 final class RelativeDateTimeFormatterExtensionsTests: XCTestCase {
     
     func testFormatter() {

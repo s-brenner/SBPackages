@@ -1,19 +1,17 @@
-import Foundation
-
+#if os(iOS) || os(macOS) || os(watchOS)
 extension Bundle {
     
-    public func decode<T: Decodable>(
+    public func decode<T>(
         _ type: T.Type,
         from file: String,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate,
         keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
-    ) -> T {
-        guard let url = self.url(forResource: file, withExtension: nil) else {
-            fatalError("Failed to locate \(file) in bundle.")
-        }
-        guard let data = try? Data(contentsOf: url) else {
-            fatalError("Failed to load \(file) from bundle.")
-        }
+    ) -> T
+    where T:Decodable {
+        guard let url = self.url(forResource: file, withExtension: nil)
+        else { fatalError("Failed to locate \(file) in bundle.") }
+        guard let data = try? Data(contentsOf: url)
+        else { fatalError("Failed to load \(file) from bundle.") }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = dateDecodingStrategy
         decoder.keyDecodingStrategy = keyDecodingStrategy
@@ -37,3 +35,4 @@ extension Bundle {
         }
     }
 }
+#endif

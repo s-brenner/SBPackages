@@ -1,8 +1,7 @@
 #if canImport(Combine)
-import Combine
-
 extension Future where Failure == Error {
     
+    /// - Author: Scott Brenner | SBCombine
     public convenience init(operation: @escaping () async throws -> Output) {
         self.init { promise in
             Task {
@@ -19,6 +18,7 @@ extension Future where Failure == Error {
 
 extension Future where Failure == Never {
     
+    /// - Author: Scott Brenner | SBCombine
     public convenience init(operation: @escaping () async -> Output) {
         self.init { promise in
             Task {

@@ -1,15 +1,17 @@
 #if canImport(Combine)
-import Combine
+import Foundation
 
-public extension Publisher {
+extension Publisher {
     
-    func weakAssign<Root: AnyObject>(
+    /// - Author: Scott Brenner | SBCombine
+    public func weakAssign<Root: AnyObject>(
         valueTo valueKeyPath: ReferenceWritableKeyPath<Root, Output>,
         errorTo errorKeyPath: ReferenceWritableKeyPath<Root, Failure?>? = nil,
         on object: Root
     ) -> AnyCancellable {
         sink { [weak object] completion in
-            guard let errorKeyPath = errorKeyPath else { return }
+            guard let errorKeyPath = errorKeyPath
+            else { return }
             if case .failure(let error) = completion {
                 object?[keyPath: errorKeyPath] = error
             }
@@ -18,7 +20,8 @@ public extension Publisher {
         }
     }
     
-    func updatePublished<Root: AnyObject, T>(
+    /// - Author: Scott Brenner | SBCombine
+    public func updatePublished<Root: AnyObject, T>(
         _ keyPath: ReferenceWritableKeyPath<Root, T>,
         on object: Root,
         transform: @escaping (Output) -> T
@@ -31,13 +34,15 @@ public extension Publisher {
             .eraseToAnyPublisher()
     }
     
-    func convertToResult() -> AnyPublisher<Result<Output, Failure>, Never> {
+    /// - Author: Scott Brenner | SBCombine
+    public func convertToResult() -> AnyPublisher<Result<Output, Failure>, Never> {
         map(Result.success)
             .catch { Just(.failure($0)) }
             .eraseToAnyPublisher()
     }
     
-    func unwrap<T>(
+    /// - Author: Scott Brenner | SBCombine
+    public func unwrap<T>(
         orThrow error: @escaping @autoclosure () -> Failure
     ) -> Publishers.TryMap<Self, T> where Output == Optional<T> {
         tryMap { output in
@@ -50,7 +55,8 @@ public extension Publisher {
         }
     }
     
-    func validate(
+    /// - Author: Scott Brenner | SBCombine
+    public func validate(
         using validator: @escaping (Output) throws -> Void
     ) -> Publishers.TryMap<Self, Output> {
         tryMap { output in
@@ -58,9 +64,9 @@ public extension Publisher {
             return output
         }
     }
-        
-    @available(iOS 15.0, tvOS 15.0, macOS 12.0, *)
-    func asyncMap<T>(
+    
+    /// - Author: Scott Brenner | SBCombine
+    public func asyncMap<T>(
         _ transform: @escaping (Output) async -> T
     ) -> Publishers.FlatMap<Future<T, Never>, Self> {
         flatMap { value in
@@ -73,8 +79,8 @@ public extension Publisher {
         }
     }
     
-    @available(iOS 15.0, tvOS 15.0, macOS 12.0, *)
-    func asyncMap<T>(
+    /// - Author: Scott Brenner | SBCombine
+    public func asyncMap<T>(
         _ transform: @escaping (Output) async throws -> T
     ) -> Publishers.FlatMap<Future<T, Error>, Self> {
         flatMap { value in
@@ -92,8 +98,8 @@ public extension Publisher {
         }
     }
     
-    @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 7.0, *)
-    func asyncMap<T>(
+    /// - Author: Scott Brenner | SBCombine
+    public func asyncMap<T>(
         _ transform: @escaping (Output) async throws -> T
     ) -> Publishers.FlatMap<Future<T, Error>, Publishers.SetFailureType<Self, Error>> {
         flatMap { value in
@@ -111,9 +117,10 @@ public extension Publisher {
     }
 }
 
-public extension Publisher where Output == Bool {
+extension Publisher where Output == Bool {
     
-    func ifTrue(perform action: @autoclosure @escaping () -> Void) -> Publishers.Map<Self, Output> {
+    /// - Author: Scott Brenner | SBCombine
+    public func ifTrue(perform action: @autoclosure @escaping () -> Void) -> Publishers.Map<Self, Output> {
         map { boolean in
             if boolean {
                 action()
@@ -122,7 +129,8 @@ public extension Publisher where Output == Bool {
         }
     }
     
-    func ifFalse(perform action: @autoclosure @escaping () -> Void) -> Publishers.Map<Self, Output> {
+    /// - Author: Scott Brenner | SBCombine
+    public func ifFalse(perform action: @autoclosure @escaping () -> Void) -> Publishers.Map<Self, Output> {
         map { boolean in
             if !boolean {
                 action()
@@ -131,7 +139,8 @@ public extension Publisher where Output == Bool {
         }
     }
     
-    func flatMapIfTrue<P>(
+    /// - Author: Scott Brenner | SBCombine
+    public func flatMapIfTrue<P>(
         maxPublishers: Subscribers.Demand = .unlimited,
         transform: @escaping () -> P
     ) -> Publishers.FlatMap<P, Self>
@@ -141,7 +150,8 @@ public extension Publisher where Output == Bool {
         }
     }
     
-    func flatMapIfFalse<P>(
+    /// - Author: Scott Brenner | SBCombine
+    public func flatMapIfFalse<P>(
         maxPublishers: Subscribers.Demand = .unlimited,
         transform: @escaping () -> P
     ) -> Publishers.FlatMap<P, Self>
@@ -152,35 +162,39 @@ public extension Publisher where Output == Bool {
     }
 }
 
-public extension Publisher where Output: Collection {
+extension Publisher where Output: Collection {
     
-    func mapEach<T>(
+    /// - Author: Scott Brenner | SBCombine
+    public func mapEach<T>(
         _ transform: @escaping (Output.Element) -> T
     ) -> AnyPublisher<[T], Failure> {
         map { $0.map(transform) }
             .eraseToAnyPublisher()
     }
     
-    func compactMapEach<T>(
+    /// - Author: Scott Brenner | SBCombine
+    public func compactMapEach<T>(
         _ transform: @escaping (Output.Element) -> T?
     ) -> AnyPublisher<[T], Failure> {
         map { $0.compactMap(transform) }
             .eraseToAnyPublisher()
     }
     
-    func sorted<V>(
-        by keyPath: KeyPath<Output.Element, V>,
-        ascending: Bool = true
-    ) -> AnyPublisher<[Output.Element], Failure>
-    where V: Comparable {
-        map { $0.sorted(by: keyPath, ascending: ascending) }
-            .eraseToAnyPublisher()
-    }
+//    /// - Author: Scott Brenner | SBCombine
+//    public func sorted<V>(
+//        by keyPath: KeyPath<Output.Element, V>,
+//        ascending: Bool = true
+//    ) -> AnyPublisher<[Output.Element], Failure>
+//    where V: Comparable {
+//        map { $0.sorted(by: keyPath, ascending: ascending) }
+//            .eraseToAnyPublisher()
+//    }
 }
 
-public extension Publisher where Output == Data {
+extension Publisher where Output == Data {
     
-    func decode<Item>(
+    /// - Author: Scott Brenner | SBCombine
+    public func decode<Item>(
         as type: Item.Type = Item.self,
         using decoder: JSONDecoder = .init()
     ) -> Publishers.Decode<Self, Item, JSONDecoder> {
@@ -188,18 +202,18 @@ public extension Publisher where Output == Data {
     }
 }
 
-public extension Publisher {
+extension Publisher {
     
     /// Decodes the output from the upstream as either a given type or a given error using a specified decoder.
     ///
     /// A use case for this method is when a server returns data that can be decoded as either an expected type or a server specific error message. If the error message is present, it will be decoded and the publisher will fail with the decoded error.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBCombine
     /// - Parameters:
     ///   - type: The encoded data to decode into a struct that conforms to the Decodable protocol.
     ///   - error: The encoded data to decode into a struct that conforms to the Decodable and Error protocols.
     ///   - decoder: A decoder that implements the TopLevelDecoder protocol.
     /// - Returns: A publisher that decodes a given type using a specified decoder and publishes the result.
-    func decode<Item, DecodableError, Coder>(
+    public func decode<Item, DecodableError, Coder>(
         as type: Item.Type,
         or error: DecodableError.Type,
         using decoder: Coder
@@ -216,7 +230,8 @@ fileprivate typealias DecodableResult<T, E> = Result<T, E> where T: Decodable, E
 
 fileprivate extension DecodableResult {
     
-    init<D>(input: D.Input, decoder: D) throws where D: TopLevelDecoder {
+    init<D>(input: D.Input, decoder: D) throws
+    where D: TopLevelDecoder {
         do {
             let response = try decoder.decode(Success.self, from: input)
             self = .success(response)

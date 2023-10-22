@@ -1,9 +1,9 @@
-#if canImport(AuthenticationServices)
-import AuthenticationServices
+#if canImport(AuthenticationServices) && canImport(SBStandardLibrary)
+import SBStandardLibrary
 
 extension ASAuthorizationAppleIDCredential {
     
-    private struct Printable: Encodable, CustomStringConvertible {
+    private struct Printable: JSONStringConvertible, CustomDebugStringConvertible {
         
         let identityToken: String
         
@@ -16,22 +16,21 @@ extension ASAuthorizationAppleIDCredential {
         let email: String?
         
         init?(credential: ASAuthorizationAppleIDCredential) {
-            guard let identityToken = credential.identityToken?.string(),
-                let authorizationCode = credential.authorizationCode?.string() else {
-                    return nil
-            }
+            guard let identityToken = credential.identityToken?.formatted(),
+                  let authorizationCode = credential.authorizationCode?.formatted()
+            else { return nil }
             self.identityToken = identityToken
             self.authorizationCode = authorizationCode
             user = credential.user
-            name = [credential.fullName?.givenName, credential.fullName?.familyName]
-                .compactMap { $0 }
-                .joined(separator: " ")
+            name = credential.fullName?.formatted()
             email = credential.email
         }
+        
+        var debugDescription: String { jsonDescription }
     }
     
-    open override var description: String {
-        Printable(credential: self)!.description
+    open override var debugDescription: String {
+        Printable(credential: self)!.debugDescription
     }
 }
 #endif

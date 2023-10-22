@@ -45,11 +45,11 @@ extension DateComponents {
     
     /// Convert receiver to a string with the given configuration.
     /// - Parameter configuration:A configuration for the formatter that will perform the transformation.
-//    public func toString(withConfiguration configuration: DateComponentsFormatter.Configuration = .dayHourMinute) -> String? {
-//        DateComponentsFormatter
-//            .sharedFormatter(withConfiguration: configuration)
-//            .string(from: self)
-//    }
+    public func toString(withConfiguration configuration: DateComponentsFormatter.Configuration = .dayHourMinute) -> String? {
+        DateComponentsFormatter
+            .sharedFormatter(withConfiguration: configuration)
+            .string(from: self)
+    }
 }
 
 extension DateComponents: Comparable {

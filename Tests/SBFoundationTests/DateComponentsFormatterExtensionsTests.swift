@@ -1,5 +1,5 @@
 import XCTest
-@testable import SBSwifterSwift
+@testable import SBFoundation
 
 final class DateComponentsFormatterExtensionsTests: XCTestCase {
     

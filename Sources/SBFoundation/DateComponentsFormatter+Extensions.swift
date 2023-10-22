@@ -1,7 +1,7 @@
 #if os(iOS) || os(macOS) || os(watchOS)
-public extension DateComponentsFormatter {
+extension DateComponentsFormatter {
     
-    struct Configuration {
+    public struct Configuration {
         
         private let value: (DateComponentsFormatter) -> Void
         
@@ -26,10 +26,10 @@ public extension DateComponentsFormatter {
     /// Returns the local thread shared date components formatter configured as needed.
     /// - Parameter configuration: An optional configuration for the formatter.
     ///- Author: Scott Brenner | SBSwifterSwift
-    static func sharedFormatter(
+    public static func sharedFormatter(
         withConfiguration configuration: Configuration? = nil
     ) -> DateComponentsFormatter {
-        let name = "SBSwifterSwift.\(String(describing: DateComponentsFormatter.self))"
+        let name = "SBFoundation.\(String(describing: DateComponentsFormatter.self))"
         let formatter: DateComponentsFormatter = threadSharedObject(
             key: name,
             create: { DateComponentsFormatter() }
@@ -41,7 +41,7 @@ public extension DateComponentsFormatter {
     /// Returns the local thread shared date components formatter configured as needed.
     /// - Parameter configurator: A function that modifies the local thread shared date components formatter.
     ///- Author: Scott Brenner | SBSwifterSwift
-    static func sharedFormatter(
+    public static func sharedFormatter(
         configurator: @escaping ((_ formatter: DateComponentsFormatter) -> Void)
     ) -> DateComponentsFormatter {
         sharedFormatter(withConfiguration: .init(configurator))

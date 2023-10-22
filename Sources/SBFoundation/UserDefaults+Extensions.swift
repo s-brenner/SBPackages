@@ -2,7 +2,7 @@
 extension UserDefaults {
     
     /// Get and set objects using subscript.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBFoundation
     /// - Parameter key: A key in the current user‘s defaults database.
     public subscript(key: String) -> Any? {
         get { object(forKey: key) }
@@ -10,7 +10,7 @@ extension UserDefaults {
     }
     
     /// Returns the float associated with the specified key.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBFoundation
     /// - Parameter key: A key in the current user‘s defaults database.
     /// - Returns: The float associated with the specified key, or `nil` if the key was not found.
     public func float(forKey key: String) -> Float? {
@@ -18,7 +18,7 @@ extension UserDefaults {
     }
     
     /// Returns the date associated with the specified key.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBFoundation
     /// - Parameter key: A key in the current user‘s defaults database.
     /// - Returns: The date associated with the specified key, or `nil` if the key was not found.
     public func date(forKey key: String) -> Date? {
@@ -34,7 +34,7 @@ import Combine
 extension UserDefaults {
     
     /// Returns the codable object associated with the specified key.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBFoundation
     /// - Parameter type: Object that conforms to the Codable protocol.
     /// - Parameter key: A key in the current user's defaults database.
     /// - Parameter decoder: TopLevelDecoder used to decode the data in the user's defaults database.
@@ -46,7 +46,7 @@ extension UserDefaults {
     }
     
     /// Sets the value of the specified default key.
-    /// - Author: Scott Brenner | SBSwifterSwift
+    /// - Author: Scott Brenner | SBFoundation
     /// - Parameter object: The object to store in the defaults database.
     /// - Parameter key: The key with which to associate the value.
     /// - Parameter encoder: TopLevelEncoder used to encode the object.
@@ -56,5 +56,4 @@ extension UserDefaults {
     }
 }
 #endif
-
 #endif
